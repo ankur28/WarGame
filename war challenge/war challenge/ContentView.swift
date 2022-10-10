@@ -8,6 +8,16 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+   @State var playerCard = "card5"
+   @State var cpuCard = "card9"
+   @State var playerScore: Int = 0
+   @State var cpuScore: Int = 0
+   @State var showAlert = false
+   @State var winner = ""
+    
+    
+    
     var body: some View {
         ZStack{
             Image("background")
@@ -20,14 +30,51 @@ struct ContentView: View {
                 Spacer()
                 HStack{
                     Spacer()
-                    Image("card2")
+                    Image(playerCard)
                     Spacer()
-                    Image("card3")
+                    Image(cpuCard)
                     Spacer()
                     
                 }
                 Spacer()
-                Image("dealbutton")
+                Button(action: {
+                    //generat random num b/w 2 and 14
+                    let playerRandom = Int.random(in: 2...14)
+                    let cpuRandom = Int.random(in: 2...14)
+                    
+                        playerCard = "card"+String(playerRandom)
+                        cpuCard = "card"+String(cpuRandom)
+                    
+                    if(playerRandom > cpuRandom){
+                        playerScore += 1
+                    }else{
+                        cpuScore += 1
+                    }
+                    
+                    if (playerScore == 10 || cpuScore == 10) {
+                        showAlert = true
+                        
+                        if(playerScore == 20){
+                            winner = "PLayer"
+                        }else{
+                            winner = "CPU"
+                        }
+                    }
+                    
+                }, label: {
+                    Image("dealbutton")
+                })
+                .alert(isPresented: $showAlert) { // 4
+                    Alert(
+                        title: Text("Gamer over"),
+                        message: Text("\(winner) won!!"),
+                        dismissButton: .default(Text("Play again"),
+                                                action: {
+                                                    playerScore = 0
+                                                    cpuScore = 0
+                                                })
+                    )
+                }
                 Spacer()
                 HStack{
                     Spacer()
@@ -36,7 +83,7 @@ struct ContentView: View {
                             .font(.headline)
                             .foregroundColor(Color.white)
                             .padding(10.0)
-                        Text("0")
+                        Text(String(playerScore))
                             .font(.largeTitle)
                             .foregroundColor(Color.white)
                     }
@@ -47,7 +94,7 @@ struct ContentView: View {
                             .font(.headline)
                             .foregroundColor(Color.white)
                             .padding(10.0)
-                        Text("0")
+                        Text(String(cpuScore))
                             .font(.largeTitle)
                             .foregroundColor(Color.white)
                     }
