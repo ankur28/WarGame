@@ -54,7 +54,7 @@ struct ContentView: View {
                     if (playerScore == 10 || cpuScore == 10) {
                         showAlert = true
                         
-                        if(playerScore == 20){
+                        if(playerScore == 10){
                             winner = "PLayer"
                         }else{
                             winner = "CPU"
